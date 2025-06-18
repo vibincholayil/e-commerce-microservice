@@ -1,4 +1,4 @@
-# e-commerce-microservice-project
+# e-commerce microservice project
 This is a end-to-end DevOps Implementation on a Multi-Microservice E-Commerce opentelemetry project
 
 ### Introduction 
