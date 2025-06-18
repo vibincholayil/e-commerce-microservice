@@ -6,6 +6,7 @@ This project is a demostration of real-time DevOps implementation using a highly
 
 ### Cloud Infrastructure Setup – configure and deploy a AWS cloud environment.
 #### Create an EC2 Instance
+![create_EC2_instance](images/01.png)
 
 
 ### Understanding the Project & SDLC – Gain in-depth knowledge of software development lifecycles in microservices-based architectures.
