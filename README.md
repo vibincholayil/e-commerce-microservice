@@ -50,7 +50,7 @@ ssh -i .pem ubuntu@<ip-address>
 docker ps
 docker images
 ```
-
+![docker_added](images/02_docker_added.png)  
 #### Kubectl Installation on Ubuntu EC2
 Download kubectl  
 ```
