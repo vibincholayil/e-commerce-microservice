@@ -4,7 +4,7 @@ This is a end-to-end DevOps Implementation on a Multi-Microservice E-Commerce op
 ### Introduction 
 This project is a demostration of real-time DevOps implementation using a highly popular E-Commerce project open-sourced by OpenTelemetry. This project is widely recognized as one of the best real-world applications for DevOps, and I personally believe it offers the most practical insights.  
 
-### Cloud Infrastructure Setup – configure and deploy a AWS cloud environment.
+### Cloud Infrastructure Setup – configure and deploy a AWS cloud environment and install Docker, Kubernetes, Terraform.
 #### Create an EC2 Instance  
 ![create_EC2_instance](images/01.png)
 I have use ec2 instance with ubuntu image 24.04 t2.medium  (ie: 2vCPU 8 GiB Memory)
@@ -87,8 +87,35 @@ Verify Terraform Installation
 terraform -help
 ```
 ### Try the project in local setup
+I have used this project from github repo. for that i install git
 
+clone  this repo: https://github.com/iam-veeramalla/ultimate-devops-project-demo.git
+get into the repo and try to do docker up  
+```
+docker compose up
+```
 
+#### [ERROR] because of the volume space issue
+For increasing the volume i have follow below steps  
+```
+df -h
+```
+```
+lsblk
+```
+i![volume_resize](images/Page2.png)  
+Increase the volume and let the 'volume state' to 'in-use'.  
+then i run the command for resize the file sysytem
+```
+sudo apt install cloud-guest-utils
+sudo resize2fs /dev/xvda1
+```
+Now the Volume is change to 30MB when i check the 'lsblk'  
+
+Countinue my instalation  
+```
+docker compose up
+```
 
 ### Understanding the Project & SDLC – Gain in-depth knowledge of software development lifecycles in microservices-based architectures.
 ### Containerization with Docker – Learn how to package and manage applications efficiently using Docker.
