@@ -121,8 +121,60 @@ for opening the project
 <ip-address>:8080
 ```
 ![opened the local project](images/Page3.png)
-### Understanding the Project & SDLC – Gain in-depth knowledge of software development lifecycles in microservices-based architectures.
-### Containerization with Docker – Learn how to package and manage applications efficiently using Docker.
+
+### Containerization with Docker – package and manage applications efficiently using Docker.
+### Product Catlog service (Go lang) 
+Follow readme file for bulding the binary localy in the machine  
+```
+export PRODUCT_CATALOG_PORT=8088
+```
+downloading dependencies and creating the build
+```
+go build -o product-catalog . 
+```
+```
+./product-catalog
+```
+#### create dockerfile
+```
+FROM golang:1.22-alpine AS builder
+
+WORKDIR /usr/src/app/
+
+# Use Go build cache for dependencies
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    mkdir -p /root/.cache/go-build
+
+# Copy
+COPY go.mod go.sum ./
+
+# Download
+RUN go mod download
+
+# Copy the rest of the source code
+COPY . .
+
+RUN go build -o product-catalog .
+
+####################################
+
+FROM alpine AS release
+
+WORKDIR /usr/src/app/
+
+COPY ./products/ ./products/
+COPY --from=builder /usr/src/app/product-catalog/ ./
+
+ENV PRODUCT_CATALOG_PORT 8088
+ENTRYPOINT [ "./product-catalog" ]
+"Dockerfile" 31L, 606B                                                                                                                             12,0-1        All
+```
+
+---------------------------
+Frontend service (JAVA)
+Recommentation service (Python)
+Advertisment service 
 ### Docker Compose Setup – Manage multi-container applications with Docker Compose.
 ### Kubernetes for Orchestration – Deploy and manage containers at scale using Kubernetes.
 ### Infrastructure as Code (IaC) with Terraform 
