@@ -116,7 +116,11 @@ Countinue my instalation
 ```
 docker compose up -d
 ```
-
+for opening the project 
+```
+<ip-address>:8080
+```
+![opened the local project](images/Page3.png)
 ### Understanding the Project & SDLC – Gain in-depth knowledge of software development lifecycles in microservices-based architectures.
 ### Containerization with Docker – Learn how to package and manage applications efficiently using Docker.
 ### Docker Compose Setup – Manage multi-container applications with Docker Compose.
