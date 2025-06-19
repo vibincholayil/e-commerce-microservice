@@ -110,11 +110,11 @@ then i run the command for resize the file sysytem
 sudo apt install cloud-guest-utils
 sudo resize2fs /dev/xvda1
 ```
-Now the Volume is change to 30MB when i check the 'lsblk'  
+Now the Volume is change to 30GB when i check the 'lsblk'  
 
 Countinue my instalation  
 ```
-docker compose up
+docker compose up -d
 ```
 
 ### Understanding the Project & SDLC – Gain in-depth knowledge of software development lifecycles in microservices-based architectures.
