@@ -126,7 +126,7 @@ for opening the project
 ![opened the local project](images/Page3.png)
 
 ### Containerization with Docker – package and manage applications efficiently using Docker.
-#### Product Catlog service (Go lang) 
+#### Product-Catlog service (Go lang) 
 Follow readme file for bulding the binary localy in the machine  
 ```
 export PRODUCT_CATALOG_PORT=8088
@@ -138,7 +138,7 @@ go build -o product-catalog .
 ```
 ./product-catalog
 ```
-#### create Muilti build dockerimage
+#### create Muilti build dockerimage for product-catalog
 vim Dockerfile
 ```
 FROM golang:1.22-alpine AS builder
@@ -158,22 +158,103 @@ COPY ./products/ ./products/
 COPY --from=builder /usr/src/app/product-catalog ./
 
 #EXPOSE ${PRODUCT_CATALOG_PORT}
-ENV PRODUCT_CATALOG_PORT 8088
+ENV PRODUCT_CATALOG_PORT=8088
 ENTRYPOINT ["./product-catalog"]
 ```
-#### Docker Build
+#### Docker Build product-catalog
 ```
 docker build -t vibincholayil/product-catalog:v1 .
 ```
 ![docker build](images/Page4.png)
-#### Docker Container
+#### Docker Container product-catalog
 ```
 docker run vibincholayil/product-catalog:v1
 ```
----------------------------
-Frontend service (JAVA)
-Recommentation service (Python)
-Advertisment service 
-### Docker Compose Setup – Manage multi-container applications with Docker Compose.
+Container running of product-catalog
+#### Ad service (Gradle)
+Follow readme file for bulding the binary localy in the machine  
+#### install JDK and run the service
+```
+sudo apt install openjdk-21-jre-headless 
+```
+```
+./gradlew installDist
+```
+```
+export AD_PORT=8080
+export FEATURE_FLAG_GRPC_SERVICE_ADDR=featureflagservice:50053
+./build/install/opentelemetry-demo-ad/bin/Ad
+```
+#### create docker image for Ad service
+```
+RUN chmod +x ./gradlew
+RUN ./gradlew
+RUN ./gradlew downloadRepos
+
+COPY . .
+
+COPY ./pb ./proto
+RUN chmod +x ./gradlew
+RUN ./gradlew installDist -PprotoSourceDir=./proto
+
+##########################################################
+
+FROM eclipse-temurin:21-jre
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app ./
+
+ENV AD_PORT 9099
+
+ENTRYPOINT ["./build/install/opentelemetry-demo-ad/bin/Ad"]
+
+"Dockerfile" 29L, 530B                                                                                                                             24,16         Bot
+```
+build and run this ad service
+```
+docker build -t vibincholayil/adservice:v1 .
+docker run vibincholayil/adservice:v1 
+```
+#### recommendation service (Python)
+I have start writing dockerfile
+##### Docker file for recommendation service
+```
+FROM python:3.12-slim-bookworm AS base
+
+WORKDIR /usr/src/app
+
+COPY requirements.txt ./
+
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+COPY . .
+
+ENTRYPOINT ["python", "recommendation_server.py"]
+```
+#### Build and Run
+```
+docker build -t vibincholayil/product-catalog:v1 .
+docker run vibincholayil/recommendationservice:v1
+```
+#### push all images in my docker registry
+```
+docker push docker.io/vibincholayil/product-catalog:v2
+docker push docker.io/vibincholayil/adservice:v1
+docker push docker.io/vibincholayil/recommendationservice:v1
+```
+#### Docker Compose
+i have the docker compose file
+```
+docke compose up -d
+```
+access frontant access
+```
+<ip-address>:8080
+```
 ### Kubernetes for Orchestration – Deploy and manage containers at scale using Kubernetes.
+#### create a eks cluster using Terraform
+
+
 ### Infrastructure as Code (IaC) with Terraform 
