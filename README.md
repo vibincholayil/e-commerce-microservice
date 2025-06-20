@@ -89,7 +89,10 @@ terraform -help
 ### Try the project in local setup
 I have used this project from github repo. for that i install git
 
-clone  this repo: https://github.com/iam-veeramalla/ultimate-devops-project-demo.git
+clone  this repo:  
+```
+git clone https://github.com/iam-veeramalla/ultimate-devops-project-demo.git
+```
 get into the repo and try to do docker up  
 ```
 docker compose up
@@ -135,8 +138,8 @@ go build -o product-catalog .
 ```
 ./product-catalog
 ```
-#### create dockerfile
-vim dockerfile
+#### create Muilti build dockerimage
+vim Dockerfile
 ```
 FROM golang:1.22-alpine AS builder
 
@@ -150,18 +153,21 @@ RUN go build -o product-catalog ./
 
 FROM alpine AS release
 
-WORKDIR /usr/src/app/
-
+WORKDIR /usr/src/app
 COPY ./products/ ./products/
-COPY --from=builder /usr/src/app/product-catalog/ ./
+COPY --from=builder /usr/src/app/product-catalog ./
 
-EXPOSE PRODUCT_CATALOG_PORT 8089
+#EXPOSE ${PRODUCT_CATALOG_PORT}
+ENV PRODUCT_CATALOG_PORT 8088
 ENTRYPOINT ["./product-catalog"]
-                                                                                                                       12,0-1        All
 ```
 #### Docker Build
 ```
 docker build -t vibincholayil/product-catalog:v1 .
+```
+![docker build](images/Page4.png)
+```
+docker run vibincholayil/product-catalog:v1
 ```
 ---------------------------
 Frontend service (JAVA)
