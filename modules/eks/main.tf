@@ -1,3 +1,13 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+
 # Create iam role for cluster (control plane)
 resource "aws_iam_role" "cluster" {
   name = "${var.cluster_name}-eks-cluster-role"
