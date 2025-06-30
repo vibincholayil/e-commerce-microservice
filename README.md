@@ -4,15 +4,15 @@ This is a end-to-end DevOps Implementation on a Multi-Microservice E-Commerce op
 ### Introduction 
 This project is a demostration of real-time DevOps implementation using a highly popular E-Commerce project open-sourced by OpenTelemetry. This project is widely recognized as one of the best real-world applications for DevOps, and I personally believe it offers the most practical insights.  
 
-### Cloud Infrastructure Setup – configure and deploy a AWS cloud environment and install Docker, Kubernetes, Terraform.
-#### Create an EC2 Instance  
+## Cloud Infrastructure Setup – configure and deploy server and install Docker, Kubernetes, Terraform.
+### Create an EC2 Instance  
 ![create_EC2_instance](images/01.png)
 I have use ec2 instance with ubuntu image 24.04 t2.medium  (ie: 2vCPU 8 GiB Memory)
 ```
 chmod 400 .pem
 ssh -i .pem ubuntu@<ip-address>
 ```
-#### Install Docker
+### Install Docker
 Add Docker's official GPG key:  
 ```
 sudo apt-get update
@@ -50,7 +50,7 @@ ssh -i .pem ubuntu@<ip-address>
 docker ps
 docker images
 ```
-#### Kubectl Installation on Ubuntu EC2
+### Kubectl Installation on Ubuntu EC2
 Download kubectl  
 ```
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -63,7 +63,7 @@ Verify Kubectl
 ```
 kubectl version --client
 ```
-#### Install Terraform on Ubuntu EC2
+### Install Terraform on Ubuntu EC2
 Add Hashicorp repos  
 ```
 sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
@@ -86,7 +86,7 @@ Verify Terraform Installation
 ```
 terraform -help
 ```
-### Try the project in local setup
+## Try the project in local setup
 I have used this project from github repo. for that i install git
 
 clone  this repo:  
@@ -125,7 +125,7 @@ for opening the project
 ```
 ![opened the local project](images/Page3.png)
 
-### Containerization with Docker – package and manage applications efficiently using Docker.
+## Containerization with Docker – package and manage applications using Docker.
 #### Product-Catlog service (Go lang) 
 Follow readme file for bulding the binary localy in the machine  
 ```
