@@ -51,7 +51,6 @@ resource "aws_instance" "server" {
   EOF
 
 
-
   tags = {
     Name = "aws-server-vibin"
   }

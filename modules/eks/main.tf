@@ -1,50 +1,29 @@
-module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.31"
-
-  cluster_name    = "example"
-  cluster_version = "1.31"
-
-  # Optional
-  cluster_endpoint_public_access = true
-
-  # Optional: Adds the current caller identity as an administrator via cluster access entry
-  enable_cluster_creator_admin_permissions = true
-
-  cluster_compute_config = {
-    enabled    = true
-    node_pools = ["general-purpose"]
-  }
-
-  vpc_id     = "vpc-1234556abcdef"
-  subnet_ids = ["subnet-abcde012", "subnet-bcde012a", "subnet-fghi345a"]
-
-  tags = {
-    Environment = "dev"
-    Terraform   = "true"
-  }
-}
-
-/*
+# Create iam role for cluster (control plane)
 resource "aws_iam_role" "cluster" {
-  name = "${var.cluster_name}-cluster-role"
+  name = "${var.cluster_name}-eks-cluster-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
-      Principal = {
-        Service = "eks.amazonaws.com"
-      }
-    }]
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
   })
 }
 
+# policy for cluster
 resource "aws_iam_role_policy_attachment" "cluster_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
   role       = aws_iam_role.cluster.name
 }
+
+# create eks cluster
 
 resource "aws_eks_cluster" "main" {
   name     = var.cluster_name
@@ -60,32 +39,41 @@ resource "aws_eks_cluster" "main" {
   ]
 }
 
+
+
+# Create iam role for Node (data plane)
 resource "aws_iam_role" "node" {
-  name = "${var.cluster_name}-node-role"
+  name = "${var.cluster_name}-eks-node-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
-      Principal = {
-        Service = "ec2.amazonaws.com"
-      }
-    }]
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
   })
 }
 
+# policy
 resource "aws_iam_role_policy_attachment" "node_policy" {
   for_each = toset([
-    "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
-    "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
-    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+    "AmazonEKSWorkerNodePolicy",
+    "AmazonEC2ContainerRegistryReadOnly",
+    "AmazonEKS_CNI_Policy",
+    "AmazonEKSClusterPolicy"
   ])
-
-  policy_arn = each.value
-  role       = aws_iam_role.node.name
+  policy_arn = "arn:aws:iam::aws:policy/${each.key}"
+  role       = aws_iam_role.node.name   
+  
 }
 
+# node group
 resource "aws_eks_node_group" "main" {
   for_each = var.node_groups
 
@@ -94,17 +82,17 @@ resource "aws_eks_node_group" "main" {
   node_role_arn   = aws_iam_role.node.arn
   subnet_ids      = var.subnet_ids
 
-  instance_types = each.value.instance_types
-  capacity_type  = each.value.capacity_type
-
   scaling_config {
-    desired_size = each.value.scaling_config.desired_size
-    max_size     = each.value.scaling_config.max_size
-    min_size     = each.value.scaling_config.min_size
+    desired_size = each.value.desired_size
+    max_size     = each.value.max_size
+    min_size     = each.value.min_size
   }
+
+  instance_types = [each.value.instance_type]
 
   depends_on = [
     aws_iam_role_policy_attachment.node_policy
   ]
 }
-*/
+
+
