@@ -1,17 +1,6 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
-
-
 # Create iam role for cluster (control plane)
 resource "aws_iam_role" "cluster" {
-  name = "${var.cluster_name}-eks-cluster-role"
-
+  name = var.cluster_name
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -34,7 +23,6 @@ resource "aws_iam_role_policy_attachment" "cluster_policy" {
 }
 
 # create eks cluster
-
 resource "aws_eks_cluster" "main" {
   name     = var.cluster_name
   version  = var.cluster_version
@@ -49,11 +37,9 @@ resource "aws_eks_cluster" "main" {
   ]
 }
 
-
-
 # Create iam role for Node (data plane)
 resource "aws_iam_role" "node" {
-  name = "${var.cluster_name}-eks-node-role"
+  name = "${var.cluster_name}-node-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
