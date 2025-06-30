@@ -7,7 +7,7 @@ This project is a demostration of real-time DevOps implementation using a highly
 ## Cloud Infrastructure Setup – configure and deploy server and install Docker, Kubernetes, Terraform.
 ### Create an EC2 Instance  
 ![create_EC2_instance](images/01.png)
-I have use ec2 instance with ubuntu image 24.04 t2.medium  (ie: 2vCPU 8 GiB Memory)
+I have use ec2 instance with ubuntu image 24.04 t2.medium  (ie: 2vCPU 8 GiB Memory), 30 Volume.  
 ```
 chmod 400 .pem
 ssh -i .pem ubuntu@<ip-address>
@@ -86,7 +86,7 @@ Verify Terraform Installation
 ```
 terraform -help
 ```
-## Try the project in local setup
+## Run the project in local setup
 I have used this project from github repo. for that i install git
 
 clone  this repo:  

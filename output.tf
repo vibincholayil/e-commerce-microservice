@@ -1,14 +1,14 @@
-output "cluster_endpoint" {
-  description = "EKS cluster endpoint"
-  value       = module.eks.cluster_endpoint
+output "server_name" {
+  description = "EC2 Instance Name"
+  value       = aws_instance.server.tags["Name"]
 }
 
-output "cluster_name" {
-  description = "EKS cluster name"
-  value       = module.eks.cluster_name
+output "server_id" {
+  description = "EC2 Instance ID"
+  value       = aws_instance.server.id
 }
 
-output "vpc_id" {
-  description = "VPC ID"
-  value       = module.vpc.vpc_id
+output "instance_public_ip" {
+  description = "Public IP of the EC2 instance"
+  value       = aws_instance.server.public_ip
 }
