@@ -253,8 +253,15 @@ access frontant access
 ```
 <ip-address>:8080
 ```
+## Infrastructure as Code (IaC) with Terraform 
+I have implemented Infrastructure as Code (IaC) using Terraform to provision all the required resources. To improve reusability and simplify deployment, I created two separate modules: one for EC2 and another for EKS. I then called these modules from the main Terraform configuration file. This approach helped me gain a better understanding of modular Terraform code and how it supports scalable and manageable infrastructure deployment.  
+```
+code avaiable in the folder
+```
+
+
 ### Kubernetes for Orchestration – Deploy and manage containers at scale using Kubernetes.
 #### create a eks cluster using Terraform
 
 
-### Infrastructure as Code (IaC) with Terraform 
+
