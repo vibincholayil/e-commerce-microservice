@@ -257,7 +257,7 @@ access frontant access
 #### create a eks cluster using Terraform
 I have implemented Infrastructure as Code (IaC) using Terraform to provision all the required resources. To improve reusability and simplify deployment, I created two separate modules: one for EC2 and another for EKS. I then called these modules from the main Terraform configuration file. This approach helped me gain a better understanding of modular Terraform code and how it supports scalable and manageable infrastructure deployment.  
 ```
-code avaiable in the folder
+code avaiable in the folder.
 ```
 
 ## Kubernetes for Orchestration 
