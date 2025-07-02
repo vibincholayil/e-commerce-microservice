@@ -11,6 +11,7 @@ resource "aws_vpc" "vibin_vpc" {
 }
 
 resource "aws_subnet" "myprivatesubnet" {
+  for_each = toset(var.private_subnet_cidrs)
   vpc_id     = aws_vpc.vibin_vpc.id
   cidr_block = var.private_subnet_cidrs
 
@@ -21,6 +22,7 @@ resource "aws_subnet" "myprivatesubnet" {
 
 
 resource "aws_subnet" "mypublicsubnet" {
+  for_each = toset(var.public_subnet_cidrs)
   vpc_id     = aws_vpc.vibin_vpc.id
   cidr_block = var.public_subnet_cidrs
 
