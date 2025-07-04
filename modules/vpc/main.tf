@@ -4,11 +4,15 @@ provider "aws" {
 
 resource "aws_vpc" "vibin_vpc" {
   cidr_block = var.vpc_cidr
+  enable_dns_support = true
+  enable_dns_hostnames = true
 
   tags = {
     Name = "vibin_vpc"
   }
 }
+
+# Create subnets
 
 resource "aws_subnet" "myprivatesubnet" {
   for_each   = toset(var.private_subnet_cidrs)
@@ -24,19 +28,41 @@ resource "aws_subnet" "mypublicsubnet" {
   for_each   = toset(var.public_subnet_cidrs)
   vpc_id     = aws_vpc.vibin_vpc.id
   cidr_block = each.key
+  map_public_ip_on_launch = true
 
   tags = {
     Name = "my_public_subnet-${each.key}"
   }
 }
 
+
+# Create IG, RT and assosiate the RT with pubic subnet.
+
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vibin_vpc.id
 }
 
+resource "aws_route_table" "pub_rt" {
+  vpc_id = aws_vpc.vibin_vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+}
+
+resource "aws_route_table_association" "pub_rt_assoc" {
+  subnet_id      = aws_subnet.mypublicsubnet[var.public_subnet_cidrs[0]].id
+  route_table_id = aws_route_table.pub_rt.id
+}
+
+
 resource "aws_eip" "igw_eip" {
   domain = "vpc"
 }
+
+
+# Create NAT Gateway RT and assosiate the RT with private subnet.
 
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.igw_eip.id
@@ -52,21 +78,10 @@ resource "aws_route_table" "pvt_rt" {
   }
 }
 
-resource "aws_route_table" "pub_rt" {
-  vpc_id = aws_vpc.vibin_vpc.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.igw.id
-  }
-}
-
 resource "aws_route_table_association" "pvt_rt_assoc" {
   subnet_id      = aws_subnet.myprivatesubnet[var.private_subnet_cidrs[0]].id
   route_table_id = aws_route_table.pvt_rt.id
 }
 
-resource "aws_route_table_association" "pub_rt_assoc" {
-  subnet_id      = aws_subnet.mypublicsubnet[var.public_subnet_cidrs[0]].id
-  route_table_id = aws_route_table.pub_rt.id
-}
+
+

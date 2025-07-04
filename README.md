@@ -254,17 +254,24 @@ access frontant access
 <ip-address>:8080
 ```
 ## Infrastructure as Code (IaC) with Terraform [from STRAT]. 
+I have implemented Infrastructure as Code (IaC) using Terraform to provision all the required resources. To improve reusability and simplify deployment.  
+I created two separate modules:  one for VPC and another for EKS. I then called these modules from the main Terraform configuration file. This approach helped me gain a better understanding of modular Terraform code and how it supports scalable and manageable infrastructure deployment.  
+
 #### create a VPC (virtual private cloud) for this project.  
 Created a module inside that i have created a VPC folder and written .tf files (mains, outputs, variables). I called them from the root folder with terraform.tfvars.
+```
+terraform.tfvars. 
+
+region                = "eu-central-1"
+vpc_cidr              = "10.0.0.0/16"
+private_subnet_cidrs  = ["10.0.2.0/24"]
+public_subnet_cidrs   = ["10.0.1.0/24"]
+```
 
 ![vpc_created](images/Page6.png)
 
-
 #### create a eks cluster using Terraform
-I have implemented Infrastructure as Code (IaC) using Terraform to provision all the required resources. To improve reusability and simplify deployment, I created two separate modules: one for EC2 and another for EKS. I then called these modules from the main Terraform configuration file. This approach helped me gain a better understanding of modular Terraform code and how it supports scalable and manageable infrastructure deployment.  
-```
-code avaiable in the folder.
-```
+ I have created 
 
 ## Kubernetes for Orchestration 
 #### Deploy and manage containers at scale using Kubernetes.
