@@ -1,15 +1,15 @@
 variable "region" {
-  default     = "eu-central-1"
+  type = string
 }
 
 variable "vpc_cidr" {
-  type       = list(string)
-}
-
-variable "public_subnet_cidrs" {
-  type       = list(string)
+  type = string
 }
 
 variable "private_subnet_cidrs" {
-  type       = list(string)
+  type = list(string)
+}
+
+variable "public_subnet_cidrs" {
+  type = list(string)
 }
