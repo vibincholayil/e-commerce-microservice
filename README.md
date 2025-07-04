@@ -253,7 +253,13 @@ access frontant access
 ```
 <ip-address>:8080
 ```
-## Infrastructure as Code (IaC) with Terraform 
+## Infrastructure as Code (IaC) with Terraform [from STRAT]. 
+#### create a VPC (virtual private cloud) for this project.  
+Created a module inside that i have created a VPC folder and written .tf files (mains, outputs, variables). I called them from the root folder with terraform.tfvars.
+
+![vpc_created](images/Page6.png)
+
+
 #### create a eks cluster using Terraform
 I have implemented Infrastructure as Code (IaC) using Terraform to provision all the required resources. To improve reusability and simplify deployment, I created two separate modules: one for EC2 and another for EKS. I then called these modules from the main Terraform configuration file. This approach helped me gain a better understanding of modular Terraform code and how it supports scalable and manageable infrastructure deployment.  
 ```
