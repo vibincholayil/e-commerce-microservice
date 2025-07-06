@@ -270,7 +270,7 @@ public_subnet_cidrs   = ["10.0.1.0/24"]
 
 ![vpc_created](images/Page6.png)
 
-#### create a eks cluster using Terraform
+### create a eks cluster using Terraform
  I have created 
 
 ## Kubernetes for Orchestration 
